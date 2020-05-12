@@ -1,0 +1,143 @@
+Chapter 1: Introduction
+
+1.1 - Literate Programs:
+
+    This book, "A Retargetable C Compiler: Design and Implementation (1995)",
+        is the implemenation of lcc. 
+    The source consists of interleaved prose and labelled code fragments
+    
+        fragments contain source code and refrences to other fragments
+        fragments will look like the following
+
+            <a fragment label 1> =
+                sum = 0;
+                for( i = 0; i < 10; i++) <incrament sum 1>
+
+            <incrament sum 1>=
+                sum += x[i]
+
+    Note: several framents may have the same name and <a fragment label 1> +=,
+        will be used to that we are continuing the definition of a fragment
+
+1.2 - How to read the book:
+
+    Authors suggest front to back and describe a few of the chapters
+
+        Chapter 5: describes front/back end interface of the compiler
+        Chapter 13-18: describes the backend of the compiler. notes that the
+            front end and back end can be developed independetly of one another
+            and that front/back ends can be replaced as long as interface
+            remains
+        Chapter 16-18: describes the modules for the target langauges, MIPS, 
+            SPARC, and x86. notes that each chpater is self contained
+
+    The book will use some fragments that are used but not shown, the disk
+        however contains all the definitions
+
+1.3 - Overview:
+
+    lcc transfroms ANSI-C code into one of MIPS, SPARC, x86. It does this by
+        having multiple stages where the code changes form.
+    Note lcc includes neither a linker or an assembler
+    The preprocessor, lexical analyzer, and parser comprise the front end,
+        and the code generation is that backend.
+
+
+                          SOURCE FILE
+                               |
+                               |
+                               |
+                               |
+                               V
+        +---------------------------------------------+
+        |               PREPROCESSOR                  |
+        |                                             |
+        |       Expands macros, includes headers      |
+        |          conditionally compiles code        |
+        +---------------------------------------------+
+                               |
+                               |
+                               |
+                               |
+                               V
+        +---------------------------------------------+
+        |               LEXICAL ANALYZER              |
+        |                  (SCANNER)                  |
+        |                                             |
+        |       Turns the progam into tokens          |
+        |                  Fig 1.1                    |
+        |                                             |     
+        |       Checks for syntax correctness         |
+        +---------------------------------------------+
+                               |
+                               |
+                               |
+                               |
+                               V
+        +---------------------------------------------+
+        |                   PARSER                    |
+        |                                             |
+        |       Checks for semantic correctness       |
+        |                                             |
+        | +-----------------------------------------+ |
+        | |           ABSTRACT SYNTAX TREE          | |
+        | |                 Fig 1.2                 | |
+        | |                                         | |
+        | |        Each represents one basic        | |
+        | |                operation                | |
+        | |                                         | |
+        | |                                         | |                   
+        | |     Node id is CMD+T, command+type      | |                   
+        | |                                         | |                   
+        | +-----------------------------------------+ |                   
+        |                      |                      |
+        |                      |                      |
+        |                      V                      |
+        | +-----------------------------------------+ |
+        | |       DIRECTED ACYCLIC GRAPHS (DAG)     | |
+        | |                 Fig 1.3                 | |
+        | |                                         | |
+        | |      Eliminates repeated instances of   | |
+        | |             same expression             | |
+        | |                                         | |
+        | |      Nodes drop the + from above        | |
+        | |                                         | |
+        | |                                         | |
+        | +-----------------------------------------+ |
+        |                      |                      |
+        |                      |                      |
+        |                      V                      |
+        | +-----------------------------------------+ |
+        | |                CODE LIST                | |
+        | |                 Fig 1.4                 | |
+        | |                                         | |
+        | |    Each entry represents one component  | |
+        | |                                         | |
+        | |       Blockbeg and Blockend denote      | |
+        | |           component boundry             | |
+        | |                                         | |
+        | +-----------------------------------------+ |
+        |                                             |
+        +---------------------------------------------+
+                               |
+                               |
+                               |
+                               |
+                               V
+        +---------------------------------------------+
+        |               CODE GENERATION               |
+        |                                             |
+        |                                             |
+        |       No longer machine independent         |
+        |                                             |
+        |    Have to be replaced for new targets      |
+        |                                             |
+        |         Work by annotationg DAGS            |
+        |                                             |
+        +---------------------------------------------+
+                               |
+                               |
+                               |
+                               |
+                               V
+                        ASSEMBLER CODE
