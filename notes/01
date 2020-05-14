@@ -151,7 +151,8 @@ Chapter 1: Introduction
 
 1.4 - Design
 
-    The authors built lcc with the goal of reducing time spent for programming,         thus they might not always program with effcieny for computer in mind.
+    The authors built lcc with the goal of reducing time spent for programming,
+        thus they might not always program with effcieny for computer in mind.
 
     although the book notes that "lcc is smaller and faster than most other 
         ANSI C compilers.", however that was in 1995. It would be interesting to
